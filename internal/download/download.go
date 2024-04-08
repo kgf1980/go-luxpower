@@ -7,6 +7,9 @@ import (
 	"mime"
 	"net/http"
 	"net/http/cookiejar"
+	"reflect"
+	"strings"
+
 	"net/url"
 	"os"
 
@@ -36,6 +39,21 @@ type LiveData struct {
 	InverterToGrid         int `json:"pToGrid"`
 }
 
+type LiveDataDisplay LiveData
+
+func (ldd LiveDataDisplay) MarshalJSON() ([]byte, error) {
+	lddVal := reflect.ValueOf(ldd)
+	kvpairs := []string{}
+
+	for i := 0; i < lddVal.NumField(); i++ {
+		k := lddVal.Type().Field(i).Name
+		v := lddVal.Field(i).Interface() //TODO: proper JSON encoding of things
+		kvpairs = append(kvpairs, fmt.Sprintf("\"%s\":%#v", k, v))
+	}
+
+	return []byte(fmt.Sprintf("{%s}", strings.Join(kvpairs, ","))), nil
+}
+
 type TodayData struct {
 	SolarYield         float64 `json:"todayYielding"`
 	SolarYieldTotal    float64 `json:"totalYielding"`
@@ -47,6 +65,21 @@ type TodayData struct {
 	ImportTotal        float64 `json:"totalImport"`
 	Usage              float64 `json:"todayUsage"`
 	UsageTotal         float64 `json:"totalUsage"`
+}
+
+type TodayDataDisplay TodayData
+
+func (tdd TodayDataDisplay) MarshalJSON() ([]byte, error) {
+	tddVal := reflect.ValueOf(tdd)
+	kvpairs := []string{}
+
+	for i := 0; i < tddVal.NumField(); i++ {
+		k := tddVal.Type().Field(i).Name
+		v := tddVal.Field(i).Interface() //TODO: proper JSON encoding of things
+		kvpairs = append(kvpairs, fmt.Sprintf("\"%s\":%#v", k, v))
+	}
+
+	return []byte(fmt.Sprintf("{%s}", strings.Join(kvpairs, ","))), nil
 }
 
 func NewDownloader(config *config.Config) (*Download, error) {
@@ -89,6 +122,7 @@ func (d *Download) authenticate() error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -118,7 +152,16 @@ func (d *Download) GetTodayData() (*TodayData, error) {
 	if err := json.Unmarshal(body, &data); err != nil {
 		return &TodayData{}, err
 	}
-
+	data.SolarYield = data.SolarYield / 10
+	data.SolarYieldTotal = data.SolarYieldTotal / 10
+	data.BatteryCharge = data.BatteryCharge / 10
+	data.BatteryChargeTotal = data.BatteryChargeTotal / 10
+	data.Export = data.Export / 10
+	data.ExportTotal = data.ExportTotal / 10
+	data.Import = data.Import / 10
+	data.ImportTotal = data.ImportTotal / 10
+	data.Usage = data.Usage / 10
+	data.UsageTotal = data.UsageTotal / 10
 	return &data, nil
 }
 

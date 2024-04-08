@@ -8,4 +8,5 @@ type Config struct {
 	ExportDate      string
 	ExportStartDate string
 	ExportEndDate   string
+	JsonOutput      bool
 }

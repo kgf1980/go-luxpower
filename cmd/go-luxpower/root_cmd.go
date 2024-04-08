@@ -28,6 +28,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.Password, "password", "", "Password to use when logging onto the LuxPower website")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.StationNumber, "station", "", "Station number to use for retrieving inverter data")
 	rootCmd.PersistentFlags().StringVar(&globalFlags.BaseURL, "baseurl", "", "Base URL to use for LuxPower")
+	rootCmd.PersistentFlags().BoolVar(&globalFlags.JsonOutput, "json", false, "Output data in JSON format (for commands which support it)")
 	rootCmd.AddCommand(LiveCmd())
 	rootCmd.AddCommand(TodayCmd())
 	rootCmd.AddCommand(DownloadCmd())

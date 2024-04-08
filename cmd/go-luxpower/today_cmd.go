@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/kgf1980/go-luxpower/internal/download"
@@ -20,11 +21,16 @@ func TodayCmd() *cobra.Command {
 			if err != nil {
 				return
 			}
-			fmt.Printf("Solar Yield\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.SolarYield/10, data.SolarYieldTotal/10)
-			fmt.Printf("Battery Charge\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.BatteryCharge/10, data.BatteryChargeTotal/10)
-			fmt.Printf("Export\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Export/10, data.ExportTotal/10)
-			fmt.Printf("Import\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Import/10, data.ImportTotal/10)
-			fmt.Printf("Usage\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Usage/10, data.UsageTotal/10)
+			if globalFlags.JsonOutput {
+				out, _ := json.Marshal(download.TodayDataDisplay(*data))
+				fmt.Println(string(out))
+			} else {
+				fmt.Printf("Solar Yield\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.SolarYield, data.SolarYieldTotal)
+				fmt.Printf("Battery Charge\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.BatteryCharge, data.BatteryChargeTotal)
+				fmt.Printf("Export\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Export, data.ExportTotal)
+				fmt.Printf("Import\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Import, data.ImportTotal)
+				fmt.Printf("Usage\n\tToday: %v kWh\n\tTotal: %v kWh\n", data.Usage, data.UsageTotal)
+			}
 		},
 	}
 	return cmd
