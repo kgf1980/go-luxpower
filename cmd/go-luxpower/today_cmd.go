@@ -9,9 +9,8 @@ import (
 
 func TodayCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "today",
-		Short:   "Show todays data from LuxPower",
-		Aliases: []string{"today"},
+		Use:   "today",
+		Short: "Show todays data from LuxPower",
 		Run: func(cmd *cobra.Command, args []string) {
 			d, err := download.NewDownloader(&globalFlags)
 			if err != nil {

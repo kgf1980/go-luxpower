@@ -1,8 +1,11 @@
 package config
 
 type Config struct {
-	AccountName   string
-	Password      string
-	StationNumber string
-	BaseURL       string
+	AccountName     string
+	Password        string
+	StationNumber   string
+	BaseURL         string
+	ExportDate      string
+	ExportStartDate string
+	ExportEndDate   string
 }

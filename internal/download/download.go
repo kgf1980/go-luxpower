@@ -29,9 +29,11 @@ type LiveData struct {
 	PhotoVoltaic3Watts     int `json:"ppv3"`
 	PhotoVoltaicTotalWatts int `json:"ppv"`
 	InverterToBattery      int `json:"pCharge"`
+	BatteryToInverter      int `json:"pDisCharge"`
 	BatteryChargePercent   int `json:"soc"`
 	InverterToLoad         int `json:"pinv"`
 	GridToLoad             int `json:"pToUser"`
+	InverterToGrid         int `json:"pToGrid"`
 }
 
 type TodayData struct {
@@ -157,7 +159,6 @@ func (d *Download) DownloadFile(ExportDate string, Folder string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Export URL: ", exportUrl)
 
 	r, err := d.Client.Get(exportUrl.String())
 	if err != nil {
@@ -169,7 +170,7 @@ func (d *Download) DownloadFile(ExportDate string, Folder string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Filename: %s\n", params["filename"])
+	fmt.Printf("Downloaded %s\n", params["filename"])
 	out, err := os.Create(params["filename"])
 	if err != nil {
 		return err

@@ -30,6 +30,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.BaseURL, "baseurl", "", "Base URL to use for LuxPower")
 	rootCmd.AddCommand(LiveCmd())
 	rootCmd.AddCommand(TodayCmd())
+	rootCmd.AddCommand(DownloadCmd())
 }
 
 func initializeConfig(cmd *cobra.Command) error {
