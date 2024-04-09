@@ -1,3 +1,4 @@
 config.yaml
 *.xls
 bin/*
+data.db
