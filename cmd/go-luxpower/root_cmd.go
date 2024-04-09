@@ -32,6 +32,7 @@ func init() {
 	rootCmd.AddCommand(LiveCmd())
 	rootCmd.AddCommand(TodayCmd())
 	rootCmd.AddCommand(DownloadCmd())
+	rootCmd.AddCommand(ProcessCmd())
 }
 
 func initializeConfig(cmd *cobra.Command) error {
