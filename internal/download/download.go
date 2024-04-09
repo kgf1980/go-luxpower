@@ -2,11 +2,14 @@ package download
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"mime"
 	"net/http"
 	"net/http/cookiejar"
+	"path/filepath"
 	"reflect"
 	"strings"
 
@@ -195,6 +198,18 @@ func (d *Download) GetLiveData() (*LiveData, error) {
 }
 
 func (d *Download) DownloadFile(ExportDate string, Folder string) error {
+	filename := fmt.Sprintf("%s - %s.xls", d.StationNumber, ExportDate)
+	filename = filepath.Join(Folder, filename)
+	filename, err := filepath.Abs(filename)
+	if err != nil {
+		return err
+	}
+	os.MkdirAll(filepath.Dir(filename), 0750)
+	info, err := os.Stat(filename)
+	if !errors.Is(err, fs.ErrNotExist) && info.Size() > 0 {
+		fmt.Println(filename, " already exists - skipping")
+		return nil
+	}
 	if len(d.Jar.Cookies(d.BaseURL)) == 0 {
 		d.authenticate()
 	}
@@ -213,8 +228,9 @@ func (d *Download) DownloadFile(ExportDate string, Folder string) error {
 	if err != nil {
 		return err
 	}
+
 	fmt.Printf("Downloaded %s\n", params["filename"])
-	out, err := os.Create(params["filename"])
+	out, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
