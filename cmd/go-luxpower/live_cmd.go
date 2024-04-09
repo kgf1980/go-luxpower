@@ -35,9 +35,9 @@ func LiveCmd() *cobra.Command {
 				fmt.Printf("\t- From Grid: %vW\n", data.GridToLoad)
 				fmt.Printf("\t- From Battery: %vW\n", data.BatteryToInverter)
 				fmt.Printf("Battery:\n")
-				fmt.Printf("\tSOC: %v%%\n", data.BatteryChargePercent)
-				fmt.Printf("\tCharging: %v W\n", data.InverterToBattery)
-				fmt.Printf("\tDischarging: %v W\n", data.BatteryToInverter)
+				fmt.Printf("\t- SOC: %v%%\n", data.BatteryChargePercent)
+				fmt.Printf("\t- Charging: %v W\n", data.InverterToBattery)
+				fmt.Printf("\t- Discharging: %v W\n", data.BatteryToInverter)
 			}
 		},
 	}
