@@ -5,7 +5,7 @@ go 1.22.1
 require (
 	github.com/Alliera/xlsReader v1.0.2
 	github.com/mattn/go-sqlite3 v1.14.22
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	golang.org/x/net v0.26.0
